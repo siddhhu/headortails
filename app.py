@@ -13,7 +13,7 @@ from flask import Flask,render_template,request
 from datetime import datetime
 from datetime import date
 import sqlite3
-
+import razorpay
 import socket    
 hostname = socket.gethostname()    
 IPAddr = socket.gethostbyname(hostname)    
@@ -22,7 +22,7 @@ IPAddr = socket.gethostbyname(hostname)
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
 
-db_path = os.path.join(os.path.dirname(__file__),'database.db')
+db_path = os.path.join(os.path.dirname(__file__),'headortails.db')
 db_uri = 'sqlite:///{}'.format(db_path)
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 Bootstrap(app)
@@ -35,6 +35,11 @@ login_manager.login_view = 'login'
 today = date.today()
 now=datetime.now()
 dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+class Withdraw(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    withdraw = db.Column(db.Integer)
+    active_user=db.Column(db.String(120),nullable=False)
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -62,12 +67,13 @@ class RegisterForm(FlaskForm):
 
 def login():
 	form = LoginForm()
+    
 	if form.validate_on_submit():
 		user = User.query.filter_by(username=form.username.data).first()
 		if user:
 			login_user(user, remember=form.remember.data)
 			if check_password_hash(user.password, form.password.data):
-				return redirect(url_for('welcome'))
+				return redirect('/welcome')
 		return render_template('invalid.html',form = form,inc="Invalid Credential!! Try again...")
 
 		# flash("Invalid Username or Password")
@@ -78,22 +84,50 @@ def login():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    form = RegisterForm()
-    if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data, method='sha256')
-        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+    if request.method=="POST":
+        username=request.form.get('username')
+        password=request.form.get('password')
+        email=request.form.get('email')
+        hashed_password = generate_password_hash(password, method='sha256')
+        new_user = User(username=username, email=email, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
         return redirect('/')
-    return render_template('signup.html',form=form)
+    return render_template('sign.html')
 
-@app.route('/welcome')
-@login_required
-def welcome():
-    return render_template('playGame.html',ds=dt_string,ip=IPAddr)
+# @app.route('/welcome')
+
+# def welcome():
+#     new=0
+#     active_user=current_user.username
+#     connection = sqlite3.connect("headortails.db")
+#     cursor = connection.cursor()
+#     cursor.execute('SELECT sum(amount) FROM payment where active_user=?',(active_user,))
+#     results = cursor.fetchall()
+#     # print(results[0])
+#     for pay in results:
+#         my_wallet=pay[0]
+        
+#     return render_template('playGame.html',ds=dt_string,ip=IPAddr,res=my_wallet)
 @app.route('/withdraw')
 def withdraw():
-    return render_template('withdraw.html')
+    active_user=current_user.username
+    connection = sqlite3.connect("headortails.db")
+    cursor = connection.cursor()
+    cursor.execute('SELECT withdraw FROM withdraw order by id desc limit 1')
+    results=cursor.fetchall()
+    for result in results:
+        bet=result[0]
+        print(type(bet))
+    return render_template('withdraw.html',results=bet)
+class Stats(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    amount=db.Column(db.Integer,nullable=False)
+    date=db.Column(db.String(120),nullable=False)
+    flipping=db.Column(db.String(120),nullable=False)
+    active_user=db.Column(db.String(120),nullable=False)
+    result=db.Column(db.String(120),nullable=False)
+    wallet=db.Column(db.Integer,nullable=False)
 
 
 @app.route('/logout')
@@ -102,62 +136,129 @@ def logout():
 	logout_user()
 	return redirect(url_for('login'))
 
-@app.route('/game',methods=["GET","POST"])
+@app.route('/welcome',methods=["GET","POST"])
 def game():
-    mon=5
-    if request.method=="POST":
-        new_str=dt_string
+    active_user=current_user.username
+    connection = sqlite3.connect("headortails.db")
+    cursor = connection.cursor()
+    cursor.execute('SELECT sum(amount) FROM payment where active_user=?',(active_user,))
+    results = cursor.fetchall()
+    # print(results[0])
+    for pay in results:
+        my_wallet=pay[0]
+    bet=0
+    active_user=current_user.username
+    connection = sqlite3.connect("headortails.db")
+    cursor = connection.cursor()
+    cursor.execute('SELECT sum(amount) FROM payment where active_user=?',(active_user,))
+    results = cursor.fetchall()
+    for pay in results:
+        my_wallet=pay[0]
+        last_wallet=my_wallet
+    new_str=dt_string
+    if request.method=="POST" and current_user.is_authenticated: 
+        
         r = randint(0,1) #generates either 0 or 1.  1 = 'heads'; 0 = 'tails'
         bet = int(request.form['bet'])
-        if bet > mon:
+        if bet > my_wallet:
             print ("\n[!] You don't have that much money!")  
-        elif mon == 0:
+        elif my_wallet == 0:
             print ('\n[!] You are out of money!\n')
         else:
             hd = request.form['hd']
-            print(hd)
+            new_bet=bet
+            # print(hd)
             if (hd == 'heads' and r == 1) or (hd == 'tails' and r == 0):
                 s='WON'
-                print ('\n[!] You won!\n')
-                mon += bet 
-                new=mon
-                print ('> You now have %s!\n' % (mon))
-                print(new)
-
+                # print ('\n[!] You won!\n')
+                my_wallet += bet 
+                bet=bet
+              
             elif (hd == 'heads' and r == 0) or (hd == 'tails' and r == 1):
                 print ('\n[!] You lost...\n')
                 s='LOSS'
-                mon -= bet
-                new=mon
-                print ('> You now have %s!\n' % (mon))
-                print(new)
+                my_wallet -= bet
+                bet=-bet
 
             else:
                 print ('\n[!] Please choose HEADS or TAILS\n')
-    
-            conn = sqlite3.connect('information.db')
+            
             new_str=dt_string
-            
-            conn.execute('''CREATE TABLE IF NOT EXISTS stats
-                            ( ID INTEGER PRIMARY KEY AUTOINCREMENT,AMOUNT INTEGER  NOT NULL,Date TEXT NOT NULL,FLIPPING INTEGER NOT NULL,RESULT TEXT NOT NULL,WALLET INTEGER NOT NULL)''')  
-            
-            
-            conn.execute('INSERT or Ignore into stats(AMOUNT,Date,FLIPPING,RESULT,WALLET) VALUES(?,?,?,?,?)', (bet,dt_string,hd,s,new))
-            conn.commit()  
-            cursor = conn.execute("SELECT ID,AMOUNT,Date,FLIPPING,RESULT from stats") 
-    
-      
-        return render_template('new.html',res=mon,ds=new_str,ip=IPAddr)
-    return render_template('playGame.html',res=mon)
+            print(active_user)
+            user=Stats(amount=bet,date=dt_string,flipping=hd,active_user=active_user,wallet=my_wallet,result=s)
+            db.session.add(user)
+            db.session.commit()
+        return render_template('new.html',res=my_wallet,ds=new_str,ip=IPAddr,wallet=last_wallet,dg=bet,mybet=new_bet)
+
+    active_user=current_user.username
+    print(active_user)
+    connection = sqlite3.connect("headortails.db")
+    cursor = connection.cursor()
+    cursor.execute('SELECT sum(amount) FROM stats where active_user=?',(active_user,))
+    results = cursor.fetchall()
+    for result in results:
+        print(result[0])
+    try:
+        final_wallet=my_wallet+result[0]
+        user=Withdraw(withdraw=final_wallet,active_user=active_user)
+        db.session.add(user)
+        db.session.commit()
+        return render_template('playGame.html',res=final_wallet,ds=dt_string,ip=IPAddr)
+    except:
+        return render_template('playGame.html',res=my_wallet,ds=dt_string,ip=IPAddr)
 
 @app.route('/home')
 def home_page():
-    conn = sqlite3.connect('information.db')
-    conn.row_factory = sqlite3.Row 
-    cur = conn.cursor() 
-    cursor = cur.execute("SELECT ID,AMOUNT,Date,FLIPPING,RESULT from stats") 
-    rows=cur.fetchall()
-    return render_template('form3.html',rows=rows)
+    if current_user.is_authenticated:
+        conn = sqlite3.connect('headortails.db')
+        conn.row_factory = sqlite3.Row 
+        cur = conn.cursor() 
+        cursor = cur.execute("SELECT ID,AMOUNT,Date,FLIPPING,RESULT,WALLET,active_user from stats") 
+        rows=cur.fetchall()
+        return render_template('form3.html',rows=rows)
 
-if __name__=='__main__':
-	app.run(debug=True)
+class Payment(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    email=db.Column(db.String(120),nullable=False)
+    username=db.Column(db.String(120),nullable=False)
+    amount=db.Column(db.String(120),nullable=False)
+    active_user=db.Column(db.String(120),nullable=False)
+    
+
+
+@app.route('/add',methods=['GET','POST'])
+def hello():
+    if current_user.is_authenticated:
+        active_user=current_user.username
+        if request.method=="POST":
+            email=request.form.get('email')
+            username=request.form.get('username')
+            amount=request.form.get('amount')
+            user=Payment(email=email,username=username,amount=amount,active_user=active_user)
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('pay',id=user.id))
+
+    return render_template('payment.html')
+@app.route('/pay/<id>',methods=['GET','POST'])
+def pay(id):
+    user=Payment.query.filter_by(id=id).first()
+    client=razorpay.Client(auth=("rzp_test_pQ6vOVhgjH2X8K","uTyrej8CdKIf6lzgll8VYAmJ"))
+    payment=client.order.create({'amount': (int(user.amount)*100),'currency':'INR','payment_capture':'1'})
+    return render_template('RazorPay.html',payment=payment)
+
+@app.route('/success',methods=['GET','POST'])
+def success():
+    if current_user.is_authenticated:
+        active_user=current_user.username
+    connection = sqlite3.connect("headortails.db")
+    cursor = connection.cursor()
+    cursor.execute("SELECT amount FROM payment where active_user=active_user")
+    results = cursor.fetchall()
+    return render_template('success.html',results=results)
+
+if __name__ == "__main__":
+    app.debug=True
+    db.create_all()
+    app.run()
+    FLASK_APP=app.py
