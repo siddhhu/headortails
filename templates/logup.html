@@ -1,10 +1,7 @@
-{% extends "bootstrap/base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
 <!doctype html>
 <html lang="en">
 
 <head>
-{% block content %}
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -16,15 +13,18 @@
     <meta name="robots" content="noindex">       <!--change to index when site is ready to index -->
     <meta name="robots" content="follow">
     <link rel="canonical" href="https://engagenreap.com/game-development.html">
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
 
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/style.css">
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="css/bootstrap.min.css">
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -32,11 +32,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="icon" href="./images/logo2.png" type="image/icon type">
-
+<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="./game-development.css">
     <!-- <link rel="stylesheet" href="./css/style.css"> -->
 
-    <title>Sign Up Form</title>
+    <title>Payment Page</title>
     <style>
         body
         {
@@ -45,23 +45,21 @@
          
          height: 100%;
         }
-
+input
+{
+    border: 2px solid red;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-size: 25px;
+    background: transparent;
+    margin-left: -30px;
+    text-align: center;
+}
        
-        input
-        {
-            border: 2px solid red;
-            border-top: none;
-            border-left: none;
-            border-right: none;
-            border-radius: 10%;
-            width: 400px;
-            height: 50px;
-            color: red;
-        }
-
         .fig
         {
-            border: 40px solid red;
+            border: 20px solid red;
             border-bottom-right-radius: 20%;
             border-top-left-radius: 20%;
         }
@@ -87,6 +85,17 @@ input:hover
     transform: scale(1.1);
 }
 
+::placeholder
+{
+  text-align: center;
+  color: red;
+}
+
+.date-input {     
+    width: 145px;
+    padding-top: 80px;
+}​
+
 .btn:hover
 {
     transform: scale(1.7);
@@ -95,32 +104,51 @@ input:hover
 </head>
 
 <body> 
-    <div class="container">
-   
-      <form class="form-signin" method="POST" action="/signup">
+
         
-      <br>
+      <br><br><br><br><br><br>
       <div class="container">
 <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-12">
-        <center><h1>SignUP</h1>
-    </div>
+<div class="col-sm-6 col-md-6 col-lg-6">
+    <section class="sign-in">
+        <div class="container">
+            <div class="signin-content">
+                <div class="signin-image">
+                    <figure><img src="{{url_for('static',filename='images/signin-image.jpg')}}"  width="400px"></figure>
+                </div>
+            </div>
+        </div>
 </div>
-<div class="row">
-<div class="col-sm-12 col-md-12 col-lg-12">
-   <center> <figure style=" width: 60%;" class="fig">
-    <br><br>
-   {{ form.hidden_tag() }}
-    {{ wtf.form_field(form.username) }}
-    {{ wtf.form_field(form.email) }}
-    {{ wtf.form_field(form.password) }}
-        <button class="btn btn-danger" type="submit">Submit</button><br><br>
+        </section>
+            </section>
 
-<form>
-        </figure>
-</div>
-</div>
-</div>
+
+
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="signin-form">
+                    <h2 class="form-title " style="padding-bottom:23px;">Register Now</h2>
+                    <form method="POST" class="register-form" id="login-form" action ="/signup">
+                        <div class="form-group">
+                            <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <i class="fa fa-user" aria-hidden="true" style="color: red; font-size: 30px;"></i><input type="text" name="username" id="your_name" placeholder="&emsp;&nbsp;Your Name"/>
+                        </div><br>
+                        <div class="form-group">
+                            <label for="your_pass"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <i class="fa fa-envelope" aria-hidden="true"  style="color: red; font-size: 30px;"></i>  <input type="email" name="email" id="your_pass" placeholder="&emsp;&nbsp;Email"/>
+                        </div><br>
+                        <div class="form-group">
+                            <label for="your_pass"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <i class="fa fa-money" aria-hidden="true" style="color: red; font-size: 30px;"></i> <input type="text" name="password" id="your_pass" placeholder="&emsp;&nbsp;Amount"/>
+                        </div>
+                        <div class="form-group form-button">
+                            <button class="btn btn-danger" style="font-size: 25px; ">Register </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    
+</div>            
+
 </body>
 </html>
-{% endblock %}

@@ -35,7 +35,7 @@
              
   
                <li class="nav-item">
-                <a class="nav-link" href="#">ADD MONEY</a>
+                <a class="nav-link" href="/add">ADD MONEY</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/withdraw">WITHDRAW</a>
@@ -59,44 +59,49 @@
               <span style="margin-left: 6px;">{{ds}} from IP:</span> 
               <span style="margin-left: 8px;">{{ip}}</span>
             </p>
-            <form action="/game" method="GET">
+            <form action="/game" method="POST">
           <div style="background-color: gainsboro;">
-            <span id="balance">Balance :${{res}}</span>
+             
             <br>
+            
+
       <h1 id="mainHeading">
+     
       
-     {% if res>5 %}
+     {% if res>wallet %}
   <div class="form-row align-items-center">
-    <h1>Hurrah You won!!</h1>
+    <h3>Hurrah You won!! ${{mybet}}</h3>
    
     <span style='font-size:100px;'>&#128519;</span>
   </div>
-  {% elif res==5 %}
+  {% elif res<=0 %}
    <div class="form-row align-items-center">
-    <h1>Insufficient Funds</h1>
+    <h3>Insufficient Funds</h3>
     
     <span style='font-size:100px;'>&#128565;</span>
   </div>
   {% else %}
   <div class="form-row align-items-center">
-    <h1>Better Luck Next Time</h1>
+    <h3>Sorry you lost!!! ${{mybet}} Try again!!</h3>
    
     <span style='font-size:100px;'>&#128532;</span>
   </div>
   {% endif %}
+  </form>
       </h1>
+      <form action="/welcome">
       <br>
-        {% if res>5 %}
+        {% if res>wallet %}
       <button type="submit" class="btn btn-danger play">Play Again >></button>   
-  {% elif res==5 %}
+  {% elif res==0 %}
       <button type="submit" class="btn btn-danger play">Add Money</button>   
       {% else %}    
       <button type="submit" class="btn btn-danger play">Play Again >></button>   
         {% endif %}
     </div>
-
-<br>
 </form>
+<br>
+
     
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

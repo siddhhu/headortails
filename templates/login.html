@@ -1,32 +1,21 @@
-{% extends "bootstrap/base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
-{% block title %}
-Login
-{% endblock %}
+<form action="/dashboard" method="post">
+  <div class="imgcontainer">
+    <img src="img_avatar2.png" alt="Avatar" class="avatar">
+  </div>
 
-{% block styles %}
-{{super()}}
-<link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
-{% endblock %}
+  <div class="container">
+    <label for="uname"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="username" required>
 
-{% block content %}
-    <div class="container">
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" required>
 
-      <form class="form-signin" method="POST" action="/">
-        <h2 class="form-signin-heading">Please log in to play</h2>
-       {{ form.hidden_tag() }}
-       {{ wtf.form_field(form.username) }}
-       {{ wtf.form_field(form.password) }}
-      
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
-      <br>
-      <a href="/signup"class="text-center"> Don't have account ?Create One ?</a>
-  
+    <button type="submit">Login</button>
+    
+  </div>
 
-
-
-      
-      </form>
-
-    </div> <!-- /container -->
-{% endblock %}
+  <div class="container" style="background-color:#f1f1f1">
+    <button type="button" class="cancelbtn">Cancel</button>
+    <span class="psw">Forgot <a href="#">password?</a></span>
+  </div>
+</form>

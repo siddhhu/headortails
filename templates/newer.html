@@ -44,15 +44,22 @@
        </li>
     {% if current_user.is_authenticated %}
   <li>Hi, </strong>{{ current_user.username }}</strong></li>
-{% else %}
-  <a href="{{ url_for(user.login) }}">why aren't you logged in?</a>
-{% endif %}
-
-      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
-        <li class="nav-item active">
+    <li class="nav-item active">
         <a class="nav-link " href="/logout">Logout</a>
       </li>
+{% else %}
+  <a href="{{ url_for(user.login) }}">why aren't you logged in?</a>
+    <li class="nav-item active">
+        <a class="nav-link " href="/logout">Register</a>
+      </li>
+      {% endif %}
+
+
+      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+      
+      
     </ul>
+    
   </div>
 </nav>
     <h1 class="text-center pt-5">Head or Tail ?</h1>

@@ -31,6 +31,8 @@
         <td><strong></strong>Day</strong></td>  
         <td><strong></strong>Flip</strong></td>  
         <td><strong></strong>Result</strong></td>  
+        <td><strong></strong>Winning Total</strong></td>  
+        <td><strong></strong>Current User</strong></td>  
     </thead>    
     {% for row in rows %}  
         <tr>  
@@ -39,6 +41,8 @@
             <td><strong>{{row[2]}}</strong></td>  
             <td><strong>{{row[3]}}</strong></td>  
             <td><strong>{{row[4]}}</strong></td>  
+            <td><strong>{{row[5]}}</strong></td>  
+             <td><strong>{{row[6]}}</strong></td>  
          
          
         </tr>  
@@ -46,7 +50,7 @@
     {% endfor %}  
 </table>  
 <br><br>
-<form action="/game" method="GET">
+<form action="/welcome" method="GET">
 <button class="btn btn-primary">Play Again</button>
 </form> 
 </div>
