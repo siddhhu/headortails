@@ -1,0 +1,184 @@
+* {
+  box-sizing: border-box;
+}
+body{
+  width: 100%;
+  overflow-x: hidden;
+}
+/*
+ * Custom translucent site header
+ */
+
+  /* navigation */
+  .navigation-bar ul li {
+    margin-right: 20px;
+    margin-left: 34px;
+}
+
+.navbar-nav .nav-item a{
+  font-size: 15px;
+} 
+
+
+.featurette-divider {
+  margin: 3rem 0; /* Space out the Bootstrap <hr> more */
+}
+
+/* Thin out the marketing headings */
+.featurette-heading {
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -.05rem;
+}
+
+@media (min-width: 40em) {
+  /* Bump up size of carousel content */
+
+  .featurette-heading {
+    font-size: 50px;
+  }
+}
+
+@media (min-width: 62em) {
+  .featurette-heading {
+    margin-top: 7rem;
+  }
+}
+
+/* responsive */
+
+@media only screen and (max-width: 900px)
+{
+    .col-md-5>img{
+        width: 300px;
+        height: 350px;
+    }
+    
+}
+    
+    
+@media only screen and (max-width: 900px)
+{
+      
+    .col-md-6 .video{
+        width: 300px;
+        
+    }
+}
+@media screen and (max-width: 1400px) and (min-width: 900px)
+{
+   .col-md-5>img,.col-md-6 .video {
+        width: 400px;
+    }
+}
+
+@media only screen and (max-width: 500px){
+    .carousel-item{
+        height: 350px;
+        
+    }
+    
+}
+
+
+/* ------------------ethics--------------------- */
+
+*,body{
+  box-sizing: border-box;
+}
+
+.ethic-img img{
+  width: 100%;
+  margin:25px 15px;
+  /* border: 4px solid #888888; */
+  /* border-radius: 10px; */
+}
+
+.ethic-info h2{
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.ethic-info p{ 
+  width: 100%;
+  text-align: justify;
+  margin:auto ;
+  padding:50px;
+  line-height: 30px;
+}
+/* -------------------ethics end ----------------------*/
+
+/* ------------------Carousel---------------- */
+
+
+.carousel-inner img {
+  width: 100%;
+  height: 85vh;
+}
+
+.carousel-caption{
+  background: rgba(44, 58, 71,0.6);
+}
+
+.carousel-caption h2,p{
+  font-weight: bold;
+}
+
+.carousel-caption p{
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+/* ------------------------------------- */
+
+
+.footer-headings{
+  font-size: 19px;
+}
+
+.last-footer a{
+  text-decoration: none;
+  color: #6C6F73;
+}
+
+@media only screen and (max-width:576px){
+  .follow-us-icon{
+    margin-top: 18px;
+  }
+}
+
+
+  /* navigation */
+  .navigation-bar ul li {
+    margin-right: 20px;
+}
+
+
+/* footer */
+
+#main-footer {
+  background-color: #262F36;
+  color: white;
+  padding: 6rem 0;
+  font-size: 0.8rem;
+}
+
+#main-footer h6 {
+  color: #718FA9;
+} 
+
+.list-unstyled a{
+  font-size: 15px; 
+  text-decoration: none;
+  color: #fff;   
+}
+
+.footer-headings h6{
+    font-size: 20px;
+}
+
+.footer-headings ul li{
+    margin-top: 10px;
+}
