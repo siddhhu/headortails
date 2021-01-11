@@ -59,23 +59,23 @@
     <thead>
         <tr>
             
-        <td><strong></strong>Betting Amount</strong></td>  
-        <td><strong></strong>Date & Time</strong></td>  
-        <td><strong></strong>Your Flipping</strong></td>  
-        <td><strong></strong>Result</strong></td> 
-        <td><strong></strong>Wallet Balance</strong></td> 
+        <td><strong></strong>ID</strong></td>  
+        <td><strong></strong>Active User</strong></td> 
+        <td><strong></strong>Date </strong></td>  
+        <td><strong></strong>Withdrawal Amount</strong></td>  
+        <td><strong></strong>Status</strong></td> 
+        
         </tr>
     </thead>
      {% for row in rows %}  
         <tr>  
      
+            <td><strong>{{row[0]}}</strong></td>  
+            <td><strong>{{row[4]}}</strong></td>  
             <td><strong>{{row[1]}}</strong></td>  
             <td><strong>{{row[2]}}</strong></td>  
             <td><strong>{{row[3]}}</strong></td>  
-            <td><strong>{{row[4]}}</strong></td>  
-            <td><strong>{{row[5]}}</strong></td>  
-           
-         
+            
         </tr>  
       
     {% endfor %}  

@@ -59,47 +59,24 @@
               <span style="margin-left: 6px;">{{ds}} from IP:</span> 
               <span style="margin-left: 8px;">{{ip}}</span>
             </p>
-            <form action="/game" method="POST">
+            <form action="/welcome" method="GET">
           <div style="background-color: gainsboro;">
              
             <br>
-            
+            <h3 class="text-center">Something went wrong!!Try Again</h3>
+            <br><br>
+            <button type="submit" class="btn btn-danger play">Play Again >></button>   
 
-      <h1 id="mainHeading">
-     
-      
-     {% if res>wallet and mybet<res%}
-  <div class="form-row align-items-center">
-    <h3>Hurrah You won!! ${{mybet}}</h3>
-   
-    <span style='font-size:100px;'>&#128519;</span>
-  </div>
-  {% elif res<=0  %}
-   <div class="form-row align-items-center">
-    <h3>Insufficient Funds</h3>
-    
-    <span style='font-size:100px;'>&#128565;</span>
-  </div>
-  {% else %}
-  <div class="form-row align-items-center">
-    <h3>Sorry you lost!!! ${{mybet}} Try again!!</h3>
-   
-    <span style='font-size:100px;'>&#128532;</span>
-  </div>
-  {% endif %}
+
+
+
   </form>
       </h1>
-      <form action="/welcome">
+      
       <br>
-        {% if res>wallet %}
-      <button type="submit" class="btn btn-danger play">Play Again >></button>   
-  {% elif res==0 %}
-      <button type="submit" class="btn btn-danger play">Add Money</button>   
-      {% else %}    
-      <button type="submit" class="btn btn-danger play">Play Again >></button>   
-        {% endif %}
+    
     </div>
-</form>
+
 <br>
 
     
